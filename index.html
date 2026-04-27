@@ -360,15 +360,107 @@
   .footer-copy { font-size: 0.8rem; color: #666; margin-top: 16px; }
   .footer-disclaimer { font-size: 0.75rem; color: #555; margin-top: 8px; }
 
-  /* ── ANIMATIONS ── */
+  /* ── ADMIN PANEL ── */
+
+  .admin-overlay {
+    display: none; position: fixed; inset: 0; z-index: 300;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center;
+  }
+  .admin-overlay.open { display: flex; }
+
+  .admin-modal {
+    background: white; border-radius: 24px; width: 90%; max-width: 520px;
+    box-shadow: 0 24px 64px rgba(0,0,0,0.25); overflow: hidden;
+  }
+  .admin-header {
+    background: linear-gradient(135deg, var(--black), #333);
+    padding: 24px 28px; color: white;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .admin-header h3 { font-family: 'Boogaloo', cursive; font-size: 1.4rem; display: flex; align-items: center; gap: 10px; }
+  .admin-header h3 svg { width: 22px; height: 22px; fill: var(--pink); }
+  .admin-close { background: none; border: none; color: #aaa; cursor: pointer; font-size: 1.4rem; line-height: 1; }
+  .admin-close:hover { color: white; }
+  .admin-body { padding: 28px; }
+
+  /* login screen */
+  .admin-login { display: flex; flex-direction: column; gap: 16px; }
+  .admin-login label { font-weight: 800; font-size: 0.85rem; color: #555; text-transform: uppercase; letter-spacing: 1px; }
+  .admin-login input {
+    width: 100%; padding: 12px 16px; border: 2px solid #eee; border-radius: 12px;
+    font-size: 1rem; font-family: inherit; outline: none; transition: border-color 0.2s;
+  }
+  .admin-login input:focus { border-color: var(--pink); }
+  .admin-login-btn {
+    background: var(--pink); color: white; border: none; padding: 13px;
+    border-radius: 50px; font-weight: 800; font-size: 1rem; cursor: pointer;
+    font-family: inherit; transition: background 0.2s;
+  }
+  .admin-login-btn:hover { background: var(--teal-dark); }
+  .admin-error { color: #e53e3e; font-size: 0.85rem; font-weight: 700; display: none; }
+
+  /* dashboard screen */
+  .admin-dash { display: none; }
+  .admin-dash.visible { display: block; }
+  .admin-section-title { font-weight: 800; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 12px; }
+  .blocked-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; min-height: 40px; }
+  .blocked-item {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff0f8; border: 1px solid var(--pink-light); border-radius: 10px; padding: 10px 14px;
+    font-weight: 700; font-size: 0.9rem; color: var(--black);
+  }
+  .blocked-item button {
+    background: none; border: none; color: var(--pink); cursor: pointer;
+    font-size: 1.1rem; line-height: 1; padding: 0 4px;
+  }
+  .blocked-item button:hover { color: #c0392b; }
+  .no-blocked { color: #aaa; font-size: 0.9rem; font-style: italic; text-align: center; padding: 12px 0; }
+
+  .admin-cal-mini { margin-bottom: 8px; }
+  .admin-cal-mini .cal-header { border-radius: 12px 12px 0 0; padding: 14px 18px; }
+  .admin-cal-mini .cal-header h3 { font-size: 1.1rem; }
+  .admin-cal-mini .cal-grid { padding: 12px 16px; }
+  .admin-cal-mini .cal-cell { font-size: 0.8rem; border-radius: 8px; }
+  .admin-cal-mini .cal-cell.active { cursor: pointer; }
+  .admin-cal-mini .cal-cell.blocked {
+    background: linear-gradient(135deg, #ffe0e0, #ffb3b3) !important;
+    color: #c0392b !important; cursor: pointer;
+  }
+  .admin-cal-mini .cal-cell.blocked::after { background: #c0392b !important; }
+  .admin-hint { font-size: 0.8rem; color: #aaa; margin-bottom: 16px; }
+  .admin-logout { background: none; border: 2px solid #eee; color: #888; padding: 8px 20px; border-radius: 50px; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+  .admin-logout:hover { border-color: var(--pink); color: var(--pink); }
   @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
   @keyframes floatAnim { 0%, 100% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--pink); border-radius: 2px; transition: all 0.3s;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   /* ── MOBILE ── */
   @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; } }
   @media (max-width: 640px) {
     nav { padding: 12px 20px; }
-    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      background: white; flex-direction: column; padding: 16px 24px 24px;
+      border-bottom: 3px solid var(--pink); gap: 4px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { width: 100%; }
+    .nav-links a { display: block; padding: 10px 0; border-bottom: 1px solid #f5f5f5; font-size: 1rem; }
+    .nav-links .nav-cta { margin-top: 8px; text-align: center; border-radius: 50px; padding: 12px; border-bottom: none; }
     .stat-item { padding: 20px 24px; }
     .hero-btns { flex-direction: column; align-items: center; }
   }
@@ -420,17 +512,21 @@
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">
+  <a href="#" class="nav-logo" style="text-decoration:none;">
     <svg><use href="#icon-cocktail"/></svg>
     Tipsy Trail
-  </div>
-  <ul class="nav-links">
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#events">Events</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="#faq">FAQ</a></li>
-    <li><a href="#book" class="nav-cta">Book Now</a></li>
+  </a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#how" onclick="closeMenu()">How It Works</a></li>
+    <li><a href="#events" onclick="closeMenu()">Events</a></li>
+    <li><a href="#about" onclick="closeMenu()">About</a></li>
+    <li><a href="#faq" onclick="closeMenu()">FAQ</a></li>
+    <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+    <li><a href="#events" class="nav-cta" onclick="closeMenu()">Book Now</a></li>
   </ul>
+  <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -444,13 +540,13 @@
     <h1>TIPSY<br><span>TRAIL</span></h1>
     <p class="hero-sub">Explore. Sip. Repeat. — The Best of Dallas Nightlife in Just 4 Hours.</p>
     <div class="hero-btns">
-      <a href="#book" class="btn btn-primary">
+      <a href="#events" class="btn btn-primary">
         <svg><use href="#icon-ticket"/></svg>
         Grab Your Ticket
       </a>
-      <a href="#events" class="btn btn-secondary">
-        <svg><use href="#icon-pin"/></svg>
-        See Upcoming Crawls
+      <a href="#how" class="btn btn-secondary">
+        <svg><use href="#icon-chevron"/></svg>
+        How It Works
       </a>
     </div>
   </div>
@@ -614,8 +710,8 @@
           <div class="perk">
             <div class="perk-icon"><svg><use href="#icon-pin"/></svg></div>
             <div class="perk-text">
-              <h4>Curated Neighborhoods</h4>
-              <p>From Bishop Arts to Deep Ellum — we know Dallas nightlife.</p>
+              <h4>Bishop Arts District</h4>
+              <p>One of Dallas's most vibrant nightlife neighborhoods — right in our backyard.</p>
             </div>
           </div>
         </div>
@@ -690,15 +786,28 @@
   </div>
 </section>
 
-<!-- CTA STRIP -->
-<div class="cta-strip" id="book">
-  <h2>Ready to Hit the Trail?</h2>
-  <p>Grab your ticket before spots fill up. Good vibes guaranteed.</p>
-  <a href="#" class="btn">
-    <svg><use href="#icon-ticket"/></svg>
-    Book Your Spot – $40
-  </a>
-</div>
+<!-- CONTACT -->
+<section style="background: linear-gradient(135deg, var(--pink) 0%, var(--teal) 100%); padding: 80px 24px; text-align: center; color: white;" id="contact">
+  <div style="max-width: 600px; margin: 0 auto;">
+    <div style="width:64px; height:64px; background:rgba(255,255,255,0.2); border-radius:50%; display:flex; align-items:center; justify-content:center; margin: 0 auto 20px;">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+    </div>
+    <h2 style="font-family:'Boogaloo',cursive; font-size:clamp(2rem,5vw,3rem); margin-bottom:12px;">Questions? Let's Talk.</h2>
+    <p style="font-size:1.05rem; opacity:0.9; margin-bottom:32px; line-height:1.6;">Group bookings, private events, bachelorette parties — we do it all.<br>Reach out and we'll get back to you fast.</p>
+    <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+      <a href="sms:+1XXXXXXXXXX" style="background:white; color:var(--pink); padding:14px 32px; border-radius:50px; font-weight:800; text-decoration:none; font-size:1rem; display:inline-flex; align-items:center; gap:8px; transition: transform 0.2s;"
+        onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="var(--pink)"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+        Text Us
+      </a>
+      <a href="mailto:hello@tipsytrailbc.com" style="background:rgba(255,255,255,0.15); color:white; border:2px solid rgba(255,255,255,0.5); padding:14px 32px; border-radius:50px; font-weight:800; text-decoration:none; font-size:1rem; display:inline-flex; align-items:center; gap:8px; transition: transform 0.2s;"
+        onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform=''">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        Email Us
+      </a>
+    </div>
+  </div>
+</section>
 
 <!-- FOOTER -->
 <footer>
@@ -708,30 +817,79 @@
   </div>
   <div class="footer-links">
     <a href="#how">How It Works</a>
-    <a href="#events">Events</a>
+    <a href="#events">Book Tickets</a>
     <a href="#about">About</a>
     <a href="#faq">FAQ</a>
-    <a href="#">Contact</a>
+    <a href="#contact">Contact</a>
   </div>
   <div class="footer-social">
     <a href="#" class="social-btn" title="Instagram"><svg><use href="#icon-instagram"/></svg></a>
     <a href="#" class="social-btn" title="Facebook"><svg><use href="#icon-facebook"/></svg></a>
     <a href="#" class="social-btn" title="TikTok"><svg><use href="#icon-tiktok"/></svg></a>
   </div>
-  <div id="notify" style="margin: 20px 0;">
-    <p style="font-size:0.9rem; margin-bottom: 12px;">Get notified about new crawls</p>
-    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
-      <input type="email" placeholder="your@email.com"
-        style="padding:10px 18px; border-radius:50px; border:none; font-size:0.9rem; background:#222; color:#fff; outline:none; min-width:220px;">
-      <button style="background:var(--pink); color:white; border:none; padding:10px 24px; border-radius:50px; font-weight:800; cursor:pointer; font-family:inherit; font-size:0.9rem;">
-        Notify Me
-      </button>
-    </div>
-  </div>
-  <div class="footer-copy">© 2025 Tipsy Trail Bar Crawl · Dallas, TX</div>
+  <div class="footer-copy">© 2026 Tipsy Trail Bar Crawl · Dallas, TX</div>
   <div class="footer-disclaimer">21+ only · Drink responsibly · Please don't drink and drive</div>
 </footer>
 
+<!-- ADMIN: Access via tipsytrailbc.com/#admin -->
+
+<!-- ADMIN OVERLAY -->
+<div class="admin-overlay" id="admin-overlay">
+  <div class="admin-modal">
+    <div class="admin-header">
+      <h3>
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+        Admin Panel
+      </h3>
+      <button class="admin-close" onclick="closeAdmin()">✕</button>
+    </div>
+    <div class="admin-body">
+
+      <!-- LOGIN SCREEN -->
+      <div class="admin-login" id="admin-login-screen">
+        <div>
+          <label>Password</label>
+          <input type="password" id="admin-pw-input" placeholder="Enter admin password"
+            onkeydown="if(event.key==='Enter') adminLogin()">
+        </div>
+        <div class="admin-error" id="admin-error">Incorrect password. Try again.</div>
+        <button class="admin-login-btn" onclick="adminLogin()">Sign In</button>
+      </div>
+
+      <!-- DASHBOARD SCREEN -->
+      <div class="admin-dash" id="admin-dash-screen">
+        <p class="admin-section-title">Blocked Dates</p>
+        <div class="blocked-list" id="blocked-list"></div>
+
+        <p class="admin-section-title">Block a Weekend</p>
+        <p class="admin-hint">Click any pink Friday or Saturday to block it. Click a red date to unblock it.</p>
+        <div class="admin-cal-mini">
+          <div class="cal-wrap">
+            <div class="cal-header">
+              <h3 id="admin-cal-label">April 2025</h3>
+              <div class="cal-nav">
+                <button onclick="adminChangeMonth(-1)">
+                  <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <button onclick="adminChangeMonth(1)">
+                  <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="cal-grid">
+              <div class="cal-days-header">
+                <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span class="weekend">Fri</span><span class="weekend">Sat</span>
+              </div>
+              <div class="cal-cells" id="admin-cal-cells"></div>
+            </div>
+          </div>
+        </div>
+        <button class="admin-logout" onclick="adminLogout()">Log Out</button>
+      </div>
+
+    </div>
+  </div>
+</div>
 <script>
   // ── CALENDAR ──
   let calYear, calMonth, selectedDate = null, qty = 1;
@@ -758,12 +916,8 @@
     const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
     const today = new Date();
 
-    // Reorder: Sun, Fri, Sat, Mon, Tue, Wed, Thu → map day index
-    // Column order: 0=Sun,1=Fri,2=Sat,3=Mon,4=Tue,5=Wed,6=Thu
-    const colOrder = [0, 5, 6, 1, 2, 3, 4]; // JS day → column index mapping reversed
-    // colOrder[col] = JS day number for that column
-    // We need: given JS day, what column? Build reverse map
-    const dayToCol = {}; colOrder.forEach((day, col) => dayToCol[day] = col);
+    // Standard Sun=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
+    const dayToCol = { 0:0, 1:1, 2:2, 3:3, 4:4, 5:5, 6:6 };
 
     const cells = document.getElementById('cal-cells');
     cells.innerHTML = '';
@@ -795,12 +949,18 @@
           cell.textContent = dayNum;
 
           if (isWeekend && !isPast) {
-            cell.classList.add('active');
-            if (selectedDate && cellDate.toDateString() === selectedDate.toDateString()) {
-              cell.classList.add('selected');
+            if (isBlocked(dateKey(cellDate))) {
+              // Blocked by admin — show greyed out with strikethrough
+              cell.style.cssText = 'background:#f5f5f5; color:#ccc; text-decoration:line-through; cursor:not-allowed;';
+              cell.title = 'Unavailable';
+            } else {
+              cell.classList.add('active');
+              if (selectedDate && cellDate.toDateString() === selectedDate.toDateString()) {
+                cell.classList.add('selected');
+              }
+              if (isToday) cell.classList.add('today');
+              cell.onclick = () => selectDate(cellDate, cell);
             }
-            if (isToday) cell.classList.add('today');
-            cell.onclick = () => selectDate(cellDate, cell);
           } else {
             if (isToday) cell.classList.add('today');
           }
@@ -847,11 +1007,189 @@
 
   initCal();
 
+  // ── ADMIN ──
+  const ADMIN_PASSWORD = 'TipsyTrail2025'; // ← change this to her preferred password
+  let adminLoggedIn = false;
+  let adminCalYear, adminCalMonth;
+  let blockedDates = JSON.parse(localStorage.getItem('blockedDates') || '[]');
+
+  function saveBlocked() {
+    localStorage.setItem('blockedDates', JSON.stringify(blockedDates));
+  }
+
+  function isBlocked(dateStr) {
+    return blockedDates.includes(dateStr);
+  }
+
+  function dateKey(date) {
+    return date.toDateString();
+  }
+
+  function openAdmin() {
+    document.getElementById('admin-overlay').classList.add('open');
+    document.getElementById('admin-pw-input').value = '';
+    document.getElementById('admin-error').style.display = 'none';
+    if (adminLoggedIn) showDash();
+    else showLogin();
+  }
+
+  function closeAdmin() {
+    document.getElementById('admin-overlay').classList.remove('open');
+  }
+
+  function showLogin() {
+    document.getElementById('admin-login-screen').style.display = 'flex';
+    document.getElementById('admin-dash-screen').classList.remove('visible');
+    setTimeout(() => document.getElementById('admin-pw-input').focus(), 100);
+  }
+
+  function showDash() {
+    document.getElementById('admin-login-screen').style.display = 'none';
+    document.getElementById('admin-dash-screen').classList.add('visible');
+    const now = new Date();
+    adminCalYear = now.getFullYear();
+    adminCalMonth = now.getMonth();
+    renderAdminCal();
+    renderBlockedList();
+  }
+
+  function adminLogin() {
+    const pw = document.getElementById('admin-pw-input').value;
+    if (pw === ADMIN_PASSWORD) {
+      adminLoggedIn = true;
+      document.getElementById('admin-error').style.display = 'none';
+      showDash();
+    } else {
+      document.getElementById('admin-error').style.display = 'block';
+      document.getElementById('admin-pw-input').value = '';
+      document.getElementById('admin-pw-input').focus();
+    }
+  }
+
+  function adminLogout() {
+    adminLoggedIn = false;
+    showLogin();
+  }
+
+  function adminChangeMonth(dir) {
+    adminCalMonth += dir;
+    if (adminCalMonth > 11) { adminCalMonth = 0; adminCalYear++; }
+    if (adminCalMonth < 0)  { adminCalMonth = 11; adminCalYear--; }
+    renderAdminCal();
+  }
+
+  function renderAdminCal() {
+    const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    document.getElementById('admin-cal-label').textContent = `${monthNames[adminCalMonth]} ${adminCalYear}`;
+
+    const firstDay = new Date(adminCalYear, adminCalMonth, 1).getDay();
+    const daysInMonth = new Date(adminCalYear, adminCalMonth + 1, 0).getDate();
+    const today = new Date();
+    const dayToCol = { 0:0, 1:1, 2:2, 3:3, 4:4, 5:5, 6:6 };
+    const startCol = dayToCol[firstDay];
+    const rows = Math.ceil((startCol + daysInMonth) / 7);
+
+    const cells = document.getElementById('admin-cal-cells');
+    cells.innerHTML = '';
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < 7; c++) {
+        const cellIndex = r * 7 + c;
+        const dayNum = cellIndex - startCol + 1;
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell';
+
+        if (dayNum < 1 || dayNum > daysInMonth) {
+          cell.classList.add('other-month');
+        } else {
+          const cellDate = new Date(adminCalYear, adminCalMonth, dayNum);
+          const jsDay = cellDate.getDay();
+          const isWeekend = jsDay === 5 || jsDay === 6;
+          const isPast = cellDate < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+          cell.textContent = dayNum;
+
+          if (isWeekend && !isPast) {
+            cell.classList.add('active');
+            if (isBlocked(dateKey(cellDate))) cell.classList.add('blocked');
+            cell.onclick = () => toggleBlock(cellDate);
+          }
+        }
+        cells.appendChild(cell);
+      }
+    }
+  }
+
+  function toggleBlock(date) {
+    const key = dateKey(date);
+    if (isBlocked(key)) {
+      blockedDates = blockedDates.filter(d => d !== key);
+    } else {
+      blockedDates.push(key);
+    }
+    saveBlocked();
+    renderAdminCal();
+    renderBlockedList();
+    renderCal(); // refresh main calendar too
+  }
+
+  function renderBlockedList() {
+    const list = document.getElementById('blocked-list');
+    list.innerHTML = '';
+    const sorted = [...blockedDates].sort((a, b) => new Date(a) - new Date(b));
+    if (sorted.length === 0) {
+      list.innerHTML = '<div class="no-blocked">No dates blocked — all weekends available.</div>';
+      return;
+    }
+    sorted.forEach(dateStr => {
+      const div = document.createElement('div');
+      div.className = 'blocked-item';
+      div.innerHTML = `<span>${dateStr}</span><button onclick="unblockDate('${dateStr}')" title="Unblock">✕</button>`;
+      list.appendChild(div);
+    });
+  }
+
+  function unblockDate(dateStr) {
+    blockedDates = blockedDates.filter(d => d !== dateStr);
+    saveBlocked();
+    renderBlockedList();
+    renderAdminCal();
+    renderCal();
+  }
+
+  // Close overlay on background click
+  document.getElementById('admin-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeAdmin();
+  });
+
+  // ── ADMIN ACCESS via tipsytrailbc.com/#admin ──
+  function checkAdminHash() {
+    if (window.location.hash === '#admin') {
+      openAdmin();
+      // Clean the hash from URL so it's not visible
+      history.replaceState(null, '', window.location.pathname);
+    }
+  }
+  window.addEventListener('load', checkAdminHash);
+  window.addEventListener('hashchange', checkAdminHash);
+
+  // ── FAQ ──
   function toggleFaq(el) {
     const item = el.closest('.faq-item');
     const isOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
+  }
+
+  // ── MOBILE MENU ──
+  function toggleMenu() {
+    const links = document.getElementById('nav-links');
+    const burger = document.getElementById('nav-hamburger');
+    links.classList.toggle('open');
+    burger.classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('nav-links').classList.remove('open');
+    document.getElementById('nav-hamburger').classList.remove('open');
   }
 
   const observer = new IntersectionObserver((entries) => {
